@@ -3,7 +3,7 @@ import './App.css';
 import XlsDropZone from './components/XlsDropZone';
 import Button from "@material-ui/core/Button"
 import { downloadJSONReq, parseJSONReq, uploadExcel } from './utils/Requests';
-import { Card} from '@material-ui/core';
+import { Card } from '@material-ui/core';
 import { DropEvent } from 'react-dropzone';
 import FileResponse from './ReqModels/FileResponse';
 import config from './config';
@@ -42,8 +42,9 @@ function App() {
         setParseDisabled(false);
         setDownDisabled(true);
       }).catch(error => {
-        if (error.response && error.response.message) {
-          setResultInfo(error.response.message);
+        console.log(error.response.message)
+        if (error.response && error.response.data && error.response.data.message) {
+          setResultInfo(error.response.data.message);
         } else {
           setResultInfo(config.defaultError);
         }
@@ -65,8 +66,8 @@ function App() {
         setResultInfo(response.data.message);
         setDownDisabled(false);
       }).catch(error => {
-        if (error.response && error.response.message) {
-          setResultInfo(error.response.message);
+        if (error.response && error.response.data && error.response.data.message) {
+          setResultInfo(error.response.data.message);
         } else {
           setResultInfo(config.defaultError);
         }
@@ -78,7 +79,7 @@ function App() {
 
   const downloadClick = () => {
     if (fileResponse !== undefined) {
-      const downResponse: String = downloadJSONReq(fileResponse.fileName)
+      downloadJSONReq(fileResponse.fileName)
       resetStates();
     }
   }
